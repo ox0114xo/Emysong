@@ -40,7 +40,7 @@ body {
 }
 
 /* =========================================
-   1. 浮誇首屏英雄區塊 (Hero Section)
+   1. 首屏英雄區塊 (Hero Section)
    ========================================= */
 .hero-section {
     position: relative;
@@ -49,9 +49,8 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
-    /* 引入頂級音響背景圖並設定視差滾動 */
-    background: url('[attachment_0](attachment)') no-repeat center center/cover;
-    background-attachment: fixed;
+    background: linear-gradient(135deg, rgba(10,10,10,0.95) 0%, rgba(20,20,20,0.8) 50%, rgba(10,10,10,0.95) 100%);
+    padding-top: 50px;
 }
 
 .overlay {
@@ -60,7 +59,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.9) 100%);
+    background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.8) 100%);
     z-index: 1;
 }
 
@@ -112,7 +111,7 @@ body {
 
 .price-box {
     margin-bottom: 40px;
-    padding: 20px;
+    padding: 20px 40px;
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
     border-radius: 15px;
@@ -136,7 +135,7 @@ body {
 
 .sale-price strong {
     font-size: 3.5rem;
-    color: #ff3366; /* 視覺衝擊的促銷紅 */
+    color: #ff3366;
     text-shadow: 0 0 15px rgba(255, 51, 102, 0.6);
     font-family: 'Montserrat', sans-serif;
 }
@@ -168,13 +167,12 @@ body {
 }
 
 /* =========================================
-   2. 極致黑科技特色區塊 (Features Section)
+   2. 極致特色區塊 (Features Section)
    ========================================= */
 .features-section {
     padding: 120px 0;
-    /* 引入碳纖維單體背景圖 */
-    background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)), url('[attachment_2](attachment)') no-repeat center center/cover;
-    background-attachment: fixed;
+    background-color: #080808;
+    background-image: radial-gradient(circle at 50% 50%, rgba(212,175,55,0.05) 0%, transparent 50%);
     border-top: 2px solid var(--gold-dark);
     border-bottom: 2px solid var(--gold-dark);
 }
@@ -196,34 +194,16 @@ body {
 }
 
 .feature-card {
-    background: rgba(20, 20, 20, 0.6);
+    background: rgba(20, 20, 20, 0.8);
     border: 1px solid var(--glass-border);
     padding: 40px 30px;
     border-radius: 20px;
     text-align: center;
     transition: all 0.4s ease;
     backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
     box-shadow: 0 15px 35px rgba(0,0,0,0.5);
     position: relative;
     overflow: hidden;
-}
-
-.feature-card::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(212,175,55,0.1) 0%, transparent 70%);
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    z-index: 0;
-}
-
-.feature-card:hover::before {
-    opacity: 1;
 }
 
 .feature-card:hover {
@@ -236,8 +216,6 @@ body {
     font-size: 4rem;
     color: var(--gold-light);
     margin-bottom: 20px;
-    position: relative;
-    z-index: 1;
     filter: drop-shadow(0 0 10px var(--gold-primary));
 }
 
@@ -245,48 +223,28 @@ body {
     font-size: 1.5rem;
     color: #fff;
     margin-bottom: 15px;
-    position: relative;
-    z-index: 1;
 }
 
 .feature-card p {
     color: var(--text-muted);
     font-size: 1rem;
-    position: relative;
-    z-index: 1;
 }
 
 /* =========================================
    3. 視覺衝擊與工藝美學 (Visual Impact)
    ========================================= */
 .visual-impact {
-    padding: 200px 20px;
+    padding: 150px 20px;
     text-align: center;
-    /* 引入頂級鋼琴烤漆音響細節背景 */
-    background: url('[attachment_1](attachment)') no-repeat center center/cover;
-    background-attachment: fixed;
+    background: #0f0f0f;
     position: relative;
-}
-
-.overlay-dark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    z-index: 1;
 }
 
 .visual-content {
-    position: relative;
-    z-index: 2;
     background: var(--glass-bg);
     padding: 60px;
     border-radius: 30px;
     border: 1px solid var(--glass-border);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
     max-width: 900px;
     margin: 0 auto;
     box-shadow: 0 30px 60px rgba(0,0,0,0.9);
@@ -303,10 +261,35 @@ body {
     font-size: 1.3rem;
     line-height: 2;
     color: #f0f0f0;
+    margin-bottom: 30px;
+}
+
+/* 新增：特色小標籤 Pill Badge */
+.extra-features {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.pill-badge {
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid var(--gold-primary);
+    color: var(--gold-light);
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+}
+
+.pill-badge i {
+    margin-right: 8px;
 }
 
 /* =========================================
-   4. 飢餓行銷與訂購表單 (Order Section)
+   4. 訂購區塊與開票說明 (Order Section)
    ========================================= */
 .order-section {
     padding: 100px 0;
@@ -326,7 +309,7 @@ body {
     display: flex;
     justify-content: center;
     gap: 20px;
-    margin-bottom: 60px;
+    margin-bottom: 40px;
 }
 
 .time-block {
@@ -336,7 +319,7 @@ body {
     border-radius: 15px;
     text-align: center;
     min-width: 120px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.8), inset 0 0 15px rgba(212,175,55,0.1);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.8);
 }
 
 .time-block span {
@@ -344,10 +327,31 @@ body {
     font-family: 'Montserrat', sans-serif;
     font-weight: 900;
     color: var(--gold-primary);
-    text-shadow: 0 0 15px var(--glow-spread);
     display: block;
     line-height: 1;
     margin-bottom: 10px;
+}
+
+/* 新增：開票說明區塊 */
+.invoice-notice {
+    max-width: 700px;
+    margin: 0 auto 40px auto;
+    background: rgba(212, 175, 55, 0.05);
+    border-left: 5px solid var(--gold-primary);
+    padding: 20px;
+    border-radius: 0 10px 10px 0;
+}
+
+.invoice-notice h3 {
+    color: var(--gold-primary);
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.invoice-notice p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin: 0;
 }
 
 .order-form {
@@ -384,7 +388,7 @@ body {
 }
 
 .form-header p {
-    color: #00ff88; /* 突顯免運的綠色 */
+    color: #00ff88;
     font-weight: bold;
     font-size: 1.2rem;
 }
@@ -398,7 +402,6 @@ body {
     margin-bottom: 10px;
     color: var(--gold-light);
     font-weight: bold;
-    font-size: 1.1rem;
 }
 
 .form-group input,
@@ -411,7 +414,6 @@ body {
     font-size: 1.1rem;
     border-radius: 8px;
     transition: all 0.3s;
-    font-family: inherit;
 }
 
 .form-group input:focus,
@@ -419,7 +421,6 @@ body {
     outline: none;
     border-color: var(--gold-primary);
     box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
-    background: #222;
 }
 
 .submit-btn {
@@ -436,17 +437,15 @@ body {
     text-transform: uppercase;
     letter-spacing: 3px;
     box-shadow: 0 10px 25px rgba(255, 51, 102, 0.4);
-    font-family: 'Noto Serif TC', serif;
 }
 
 .submit-btn:hover {
     background: linear-gradient(to right, #cc0033, #ff3366);
     transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(255, 51, 102, 0.6);
 }
 
 /* =========================================
-   5. 頁尾區塊 (Footer)
+   5. 頁尾與動畫
    ========================================= */
 footer {
     background: #050505;
@@ -456,63 +455,25 @@ footer {
     color: #666;
 }
 
-footer p {
-    margin-bottom: 10px;
-}
-
-/* =========================================
-   6. 浮誇動畫定義 (Animations)
-   ========================================= */
 @keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-50px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(-50px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes pulse {
-    0% {
-        box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7);
-    }
-    70% {
-        box-shadow: 0 0 0 25px rgba(212, 175, 55, 0);
-    }
-    100% {
-        box-shadow: 0 0 0 0 rgba(212, 175, 55, 0);
-    }
+    0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
+    70% { box-shadow: 0 0 0 25px rgba(212, 175, 55, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
 }
 
 @keyframes flash {
-    0%, 50%, 100% {
-        opacity: 1;
-    }
-    25%, 75% {
-        opacity: 0.5;
-    }
+    0%, 50%, 100% { opacity: 1; }
+    25%, 75% { opacity: 0.5; }
 }
 
-/* RWD 響應式微調 */
 @media (max-width: 768px) {
-    .glow-text {
-        font-size: 3rem;
-    }
-    .sub-title {
-        font-size: 1.5rem;
-    }
-    .sale-price strong {
-        font-size: 2.5rem;
-    }
-    .section-title {
-        font-size: 2.2rem;
-    }
-    .visual-content h2 {
-        font-size: 2.2rem;
-    }
-    .time-block span {
-        font-size: 2.5rem;
-    }
+    .glow-text { font-size: 3rem; }
+    .sub-title { font-size: 1.5rem; }
+    .sale-price strong { font-size: 2.5rem; }
+    .section-title { font-size: 2.2rem; }
 }
