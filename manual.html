@@ -3,52 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>設備語音指令說明 (雙頁完美排版版)</title>
+    <title>設備語音指令說明 (字體放大友善版)</title>
     <style>
         body {
             font-family: "Microsoft JhengHei", sans-serif;
-            color: #000;
-            background-color: #e9ecef; /* 螢幕觀看時加上微灰背景，比較不刺眼 */
+            color: #222;
+            background-color: #e9ecef;
             margin: 0;
-            padding: 20px 0; /* 螢幕觀看時上下留點空隙 */
+            padding: 20px 0;
+            line-height: 1.6; /* 加大行距，閱讀更舒適 */
         }
 
-        /* A4 紙張列印設定：將邊界縮小至 8mm 以爭取最大空間 */
+        /* 友善版的 A4 紙張列印設定：給予舒適的邊界 */
         @page {
             size: A4;
-            margin: 8mm;
+            margin: 15mm;
         }
 
-        /* 每一頁的畫布設定：強制分頁，並在螢幕上模擬 A4 紙張外觀 */
-        .page {
+        /* 螢幕觀看時的畫布設定：不限制高度，讓內容自然延展 */
+        .document-container {
             width: 210mm;
-            min-height: 297mm;
             background-color: #fff;
-            page-break-after: always; 
-            padding: 10mm;
-            margin: 0 auto 20px auto;
+            padding: 15mm 20mm;
+            margin: 0 auto;
             box-sizing: border-box;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* 螢幕上的紙張陰影 */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
-        /* 最後一頁不需要再強制分頁，避免產生空白頁 */
-        .page:last-child {
-            page-break-after: auto;
-            margin-bottom: 0;
+        /* 麥克風區塊強制換頁 */
+        .page-break-section {
+            page-break-before: always;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px dashed #ccc; /* 螢幕上看的分隔線 */
         }
 
-        /* 列印時的專屬設定：清除所有螢幕觀看用的背景、陰影和邊距 */
+        /* 列印時的專屬設定 */
         @media print {
             body {
                 background-color: #fff;
                 padding: 0;
             }
-            .page {
+            .document-container {
                 width: 100%;
-                min-height: auto;
                 margin: 0;
                 padding: 0;
                 box-shadow: none;
+            }
+            .page-break-section {
+                margin-top: 0;
+                padding-top: 0;
+                border-top: none; /* 列印時隱藏分隔線 */
             }
             /* 列印時隱藏控制按鈕 */
             .no-print {
@@ -58,43 +63,54 @@
 
         h1 {
             text-align: center;
-            font-size: 20px;
+            font-size: 26px; /* 標題放大 */
+            color: #2c3e50;
             margin-top: 0px;
-            margin-bottom: 8px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 10px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 12px;
+            font-size: 16px; /* 表格字體大幅度放大 */
             table-layout: fixed;
         }
 
         th, td {
-            border: 1px solid #000;
-            padding: 4px 6px;
+            border: 2px solid #555; /* 加粗表格框線，對比更清楚 */
+            padding: 12px 10px; /* 增加內縮排，格子變大 */
             text-align: left;
-            line-height: 1.2;
+            vertical-align: middle;
             word-wrap: break-word;
         }
 
         th {
-            background-color: #e6e6e6;
+            background-color: #d5e1df;
+            color: #333;
             font-weight: bold;
+            font-size: 18px; /* 表頭再放大 */
             text-align: center;
         }
 
-        /* 避免表格列跨頁斷裂 */
+        /* 避免表格列在列印時被從中間切斷 */
         tr {
             page-break-inside: avoid;
         }
 
-        /* 功能組欄位垂直居中 */
+        /* 功能組欄位樣式 */
         .group-cell {
-            vertical-align: middle;
             font-weight: bold;
+            font-size: 18px;
             text-align: center;
-            background-color: #f2f2f2;
+            background-color: #f4f6f6;
+            color: #2c3e50;
+        }
+
+        /* 斑馬紋設計增加易讀性 */
+        tr:nth-child(even) td:not(.group-cell) {
+            background-color: #fafbfc;
         }
 
         /* 浮動控制面板樣式 */
@@ -113,13 +129,13 @@
         }
 
         .action-btn {
-            padding: 12px 20px;
-            font-size: 16px;
+            padding: 14px 24px;
+            font-size: 18px; /* 按鈕也放大 */
             font-family: inherit;
             font-weight: bold;
             color: #fff;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s ease;
             display: flex;
@@ -139,14 +155,15 @@
 
     <div class="floating-controls no-print">
         <button class="action-btn btn-print" onclick="window.print()">
-            🖨️ 直接列印
+            🖨️ 直接列印 (友善版)
         </button>
         <button class="action-btn btn-pdf" onclick="saveAsPDF()">
             📄 儲存為 PDF
         </button>
     </div>
 
-    <div class="page">
+    <div class="document-container">
+        
         <h1>遙控器語音指令說明</h1>
         <table>
             <thead>
@@ -161,23 +178,23 @@
                 <tr>
                     <td class="group-cell" rowspan="6">聲音控制</td>
                     <td>加大音量</td>
-                    <td>音量增大, 聲音大一點</td>
-                    <td>音量增大, 聲音大一點</td>
+                    <td>音量增大,<br>聲音大一點</td>
+                    <td>音量增大,<br>聲音大一點</td>
                 </tr>
                 <tr>
                     <td>減小音量</td>
-                    <td>減小音量, 聲音小一點</td>
-                    <td>減小音量, 聲音小一點</td>
+                    <td>減小音量,<br>聲音小一點</td>
+                    <td>減小音量,<br>聲音小一點</td>
                 </tr>
                 <tr>
                     <td>聲音最大</td>
-                    <td>聲音最大, 音量最大</td>
-                    <td>聲音最大, 音量最大</td>
+                    <td>聲音最大,<br>音量最大</td>
+                    <td>聲音最大,<br>音量最大</td>
                 </tr>
                 <tr>
-                    <td>調節音量 (N: 0-15)</td>
+                    <td>調節音量<br>(N: 0-15)</td>
                     <td>音量調到 N</td>
-                    <td>音量調到 3，音量調到 15</td>
+                    <td>音量調到 3，<br>音量調到 15</td>
                 </tr>
                 <tr>
                     <td>靜音</td>
@@ -186,84 +203,84 @@
                 </tr>
                 <tr>
                     <td>取消靜音</td>
-                    <td>打開聲音, 取消靜音</td>
-                    <td>打開聲音, 取消靜音</td>
+                    <td>打開聲音,<br>取消靜音</td>
+                    <td>打開聲音,<br>取消靜音</td>
                 </tr>
 
                 <tr>
                     <td class="group-cell" rowspan="3">功能操作</td>
-                    <td>視頻窗口全屏顯示</td>
+                    <td>視頻窗口<br>全屏顯示</td>
                     <td>視頻全屏</td>
-                    <td>全屏，視頻全屏</td>
+                    <td>全屏，<br>視頻全屏</td>
                 </tr>
                 <tr>
-                    <td>視頻窗口退出全屏顯示</td>
+                    <td>視頻窗口<br>退出全屏顯示</td>
                     <td>退出全屏</td>
-                    <td>退出全屏，取消全屏</td>
+                    <td>退出全屏，<br>取消全屏</td>
                 </tr>
                 <tr>
-                    <td>回到應用的首頁</td>
+                    <td>回到應用的<br>首頁</td>
                     <td>返回首頁</td>
                     <td>返回首頁</td>
                 </tr>
 
                 <tr>
                     <td class="group-cell" rowspan="7">UI 控制</td>
-                    <td>打開“歌星點歌”模塊</td>
+                    <td>打開“歌星點歌”<br>模塊</td>
                     <td>歌星點歌</td>
-                    <td>歌星點歌，打開歌星點歌</td>
+                    <td>歌星點歌，<br>打開歌星點歌</td>
                 </tr>
                 <tr>
-                    <td>打開“主題分類”模塊</td>
+                    <td>打開“主題分類”<br>模塊</td>
                     <td>主題分類</td>
-                    <td>主題分類，打開主題分類</td>
+                    <td>主題分類，<br>打開主題分類</td>
                 </tr>
                 <tr>
-                    <td>打開“綜藝分類”模塊</td>
+                    <td>打開“綜藝分類”<br>模塊</td>
                     <td>綜藝分類</td>
-                    <td>綜藝分類，打開綜藝分類</td>
+                    <td>綜藝分類，<br>打開綜藝分類</td>
                 </tr>
                 <tr>
-                    <td>打開“語種點歌”模塊</td>
+                    <td>打開“語種點歌”<br>模塊</td>
                     <td>語種點歌</td>
-                    <td>語種點歌，打開語種點歌</td>
+                    <td>語種點歌，<br>打開語種點歌</td>
                 </tr>
                 <tr>
-                    <td>打開“本地歌曲”模塊</td>
+                    <td>打開“本地歌曲”<br>模塊</td>
                     <td>本地歌曲</td>
-                    <td>本地歌曲，打開本地歌曲</td>
+                    <td>本地歌曲，<br>打開本地歌曲</td>
                 </tr>
                 <tr>
-                    <td>打開“我的收藏”模塊</td>
+                    <td>打開“我的收藏”<br>模塊</td>
                     <td>收藏列表</td>
-                    <td>收藏列表，打開收藏列表</td>
+                    <td>收藏列表，<br>打開收藏列表</td>
                 </tr>
                 <tr>
-                    <td>打開“下載列表”模塊</td>
+                    <td>打開“下載列表”<br>模塊</td>
                     <td>下載列表</td>
-                    <td>下載列表，打開下載列表</td>
+                    <td>下載列表，<br>打開下載列表</td>
                 </tr>
 
                 <tr>
                     <td class="group-cell" rowspan="6">播放控制</td>
                     <td>播放視頻</td>
                     <td>播放</td>
-                    <td>播放，繼續播放</td>
+                    <td>播放，<br>繼續播放</td>
                 </tr>
                 <tr>
                     <td>暫停視頻</td>
                     <td>暫停</td>
-                    <td>暫停，暫停播放</td>
+                    <td>暫停，<br>暫停播放</td>
                 </tr>
                 <tr>
-                    <td>重新播放視頻</td>
+                    <td>重新播放<br>視頻</td>
                     <td>重唱</td>
-                    <td>重唱，重新播放</td>
+                    <td>重唱，<br>重新播放</td>
                 </tr>
                 <tr>
-                    <td>切歌，下一首</td>
+                    <td>切歌，<br>下一首</td>
                     <td>下一首</td>
-                    <td>下一首，播放下一首</td>
+                    <td>下一首，<br>播放下一首</td>
                 </tr>
                 <tr>
                     <td>打開原唱</td>
@@ -280,148 +297,149 @@
                     <td class="group-cell" rowspan="5">點歌操作</td>
                     <td>搜歌</td>
                     <td></td>
-                    <td>劉德華，劉德華的歌，劉德華的冰雨</td>
+                    <td>劉德華，<br>劉德華的歌，<br>劉德華的冰雨</td>
                 </tr>
                 <tr>
-                    <td>顯示歌曲列表的上一頁</td>
+                    <td>顯示歌曲列表的<br>上一頁</td>
                     <td>上一頁</td>
                     <td>上一頁</td>
                 </tr>
                 <tr>
-                    <td>顯示歌曲列表的下一頁</td>
+                    <td>顯示歌曲列表的<br>下一頁</td>
                     <td>下一頁</td>
                     <td>下一頁</td>
                 </tr>
                 <tr>
-                    <td>選擇第N首歌曲 (N: 1-10)</td>
+                    <td>選擇第N首歌曲<br>(N: 1-10)</td>
                     <td>第N首</td>
-                    <td>第3首，第5首...</td>
+                    <td>第3首，<br>第5首...</td>
                 </tr>
                 <tr>
-                    <td>顯示已點歌曲列表</td>
+                    <td>顯示已點<br>歌曲列表</td>
                     <td>已點歌曲</td>
-                    <td>已點歌曲，打開已點歌曲</td>
+                    <td>已點歌曲，<br>打開已點歌曲</td>
                 </tr>
             </tbody>
         </table>
-    </div>
 
-    <div class="page">
-        <h1>麥克風語音指令說明</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th width="12%">功能組</th>
-                    <th width="24%">功能</th>
-                    <th width="28%">說法</th>
-                    <th width="36%">說法舉例</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="group-cell" rowspan="3">功能操作</td>
-                    <td>視頻窗口全屏顯示</td>
-                    <td>視頻全屏</td>
-                    <td>視頻全屏</td>
-                </tr>
-                <tr>
-                    <td>回到應用的首頁</td>
-                    <td>返回首頁</td>
-                    <td>返回首頁</td>
-                </tr>
-                <tr>
-                    <td>啟動應用歌曲同步功能</td>
-                    <td>同步歌曲</td>
-                    <td>同步歌曲</td>
-                </tr>
+        <div class="page-break-section">
+            <h1>麥克風語音指令說明</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th width="12%">功能組</th>
+                        <th width="24%">功能</th>
+                        <th width="28%">說法</th>
+                        <th width="36%">說法舉例</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="group-cell" rowspan="3">功能操作</td>
+                        <td>視頻窗口<br>全屏顯示</td>
+                        <td>視頻全屏</td>
+                        <td>視頻全屏</td>
+                    </tr>
+                    <tr>
+                        <td>回到應用的<br>首頁</td>
+                        <td>返回首頁</td>
+                        <td>返回首頁</td>
+                    </tr>
+                    <tr>
+                        <td>啟動應用歌曲<br>同步功能</td>
+                        <td>同步歌曲</td>
+                        <td>同步歌曲</td>
+                    </tr>
 
-                <tr>
-                    <td class="group-cell" rowspan="5">聲音控制</td>
-                    <td>加大音量</td>
-                    <td>音量增大 / 聲音大一點</td>
-                    <td>音量增大 / 聲音大一點</td>
-                </tr>
-                <tr>
-                    <td>減小音量</td>
-                    <td>音量減小 / 聲音小一點</td>
-                    <td>音量減小 / 聲音小一點</td>
-                </tr>
-                <tr>
-                    <td>調節音量 (N: 0-15)</td>
-                    <td>音量調到 N</td>
-                    <td>音量調到 3，音量調到 15</td>
-                </tr>
-                <tr>
-                    <td>靜音</td>
-                    <td>關閉聲音</td>
-                    <td>關閉聲音</td>
-                </tr>
-                <tr>
-                    <td>取消靜音</td>
-                    <td>打開聲音</td>
-                    <td>打開聲音</td>
-                </tr>
+                    <tr>
+                        <td class="group-cell" rowspan="5">聲音控制</td>
+                        <td>加大音量</td>
+                        <td>音量增大 /<br>聲音大一點</td>
+                        <td>音量增大 /<br>聲音大一點</td>
+                    </tr>
+                    <tr>
+                        <td>減小音量</td>
+                        <td>音量減小 /<br>聲音小一點</td>
+                        <td>音量減小 /<br>聲音小一點</td>
+                    </tr>
+                    <tr>
+                        <td>調節音量<br>(N: 0-15)</td>
+                        <td>音量調到 N</td>
+                        <td>音量調到 3，<br>音量調到 15</td>
+                    </tr>
+                    <tr>
+                        <td>靜音</td>
+                        <td>關閉聲音</td>
+                        <td>關閉聲音</td>
+                    </tr>
+                    <tr>
+                        <td>取消靜音</td>
+                        <td>打開聲音</td>
+                        <td>打開聲音</td>
+                    </tr>
 
-                <tr>
-                    <td class="group-cell" rowspan="6">播放控制</td>
-                    <td>播放視頻</td>
-                    <td>播放</td>
-                    <td>播放</td>
-                </tr>
-                <tr>
-                    <td>暫停視頻</td>
-                    <td>暫停</td>
-                    <td>暫停</td>
-                </tr>
-                <tr>
-                    <td>重新播放視頻</td>
-                    <td>重唱</td>
-                    <td>重唱</td>
-                </tr>
-                <tr>
-                    <td>切歌</td>
-                    <td>下一首</td>
-                    <td>下一首</td>
-                </tr>
-                <tr>
-                    <td>打開原唱</td>
-                    <td>原唱</td>
-                    <td>原唱</td>
-                </tr>
-                <tr>
-                    <td>關閉原唱</td>
-                    <td>伴唱</td>
-                    <td>伴唱</td>
-                </tr>
+                    <tr>
+                        <td class="group-cell" rowspan="6">播放控制</td>
+                        <td>播放視頻</td>
+                        <td>播放</td>
+                        <td>播放</td>
+                    </tr>
+                    <tr>
+                        <td>暫停視頻</td>
+                        <td>暫停</td>
+                        <td>暫停</td>
+                    </tr>
+                    <tr>
+                        <td>重新播放<br>視頻</td>
+                        <td>重唱</td>
+                        <td>重唱</td>
+                    </tr>
+                    <tr>
+                        <td>切歌</td>
+                        <td>下一首</td>
+                        <td>下一首</td>
+                    </tr>
+                    <tr>
+                        <td>打開原唱</td>
+                        <td>原唱</td>
+                        <td>原唱</td>
+                    </tr>
+                    <tr>
+                        <td>關閉原唱</td>
+                        <td>伴唱</td>
+                        <td>伴唱</td>
+                    </tr>
 
-                <tr>
-                    <td class="group-cell" rowspan="5">點歌操作</td>
-                    <td>搜歌</td>
-                    <td>我要唱 / 來一首</td>
-                    <td>我要唱劉德華的歌 / 來一首劉德華的冰雨</td>
-                </tr>
-                <tr>
-                    <td>顯示歌曲列表的上一頁</td>
-                    <td>上一頁</td>
-                    <td>上一頁</td>
-                </tr>
-                <tr>
-                    <td>顯示歌曲列表的下一頁</td>
-                    <td>下一頁</td>
-                    <td>下一頁</td>
-                </tr>
-                <tr>
-                    <td>選擇第N首歌曲 (N: 1-10)</td>
-                    <td>第N首</td>
-                    <td>第3首，第5首...</td>
-                </tr>
-                <tr>
-                    <td>顯示已點歌曲列表</td>
-                    <td>已點歌曲</td>
-                    <td>已點歌曲</td>
-                </tr>
-            </tbody>
-        </table>
+                    <tr>
+                        <td class="group-cell" rowspan="5">點歌操作</td>
+                        <td>搜歌</td>
+                        <td>我要唱 /<br>來一首</td>
+                        <td>我要唱劉德華的歌 /<br>來一首劉德華的冰雨</td>
+                    </tr>
+                    <tr>
+                        <td>顯示歌曲列表的<br>上一頁</td>
+                        <td>上一頁</td>
+                        <td>上一頁</td>
+                    </tr>
+                    <tr>
+                        <td>顯示歌曲列表的<br>下一頁</td>
+                        <td>下一頁</td>
+                        <td>下一頁</td>
+                    </tr>
+                    <tr>
+                        <td>選擇第N首歌曲<br>(N: 1-10)</td>
+                        <td>第N首</td>
+                        <td>第3首，<br>第5首...</td>
+                    </tr>
+                    <tr>
+                        <td>顯示已點<br>歌曲列表</td>
+                        <td>已點歌曲</td>
+                        <td>已點歌曲</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
     </div>
 
     <script>
