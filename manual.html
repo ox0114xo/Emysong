@@ -3,25 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>設備語音指令說明 (四鍵雙版本)</title>
+    <title>設備語音指令說明</title>
     <style>
-        /* CSS 變數：預設為標準版 */
+        /* 預設為大字體友善版設定：字體放大、加粗、行距壓緊以確保塞進一頁 */
         :root {
-            --font-size-h1: 20px;
-            --font-size-th: 14px;
-            --font-size-td: 12px;
-            --font-weight-td: normal;
-            --table-padding: 4px 6px;
-            --line-height-td: 1.2;
-        }
-
-        /* 長輩友善版設定：字體放大、加粗、行距壓緊以確保塞進一頁 */
-        body.friendly-mode {
             --font-size-h1: 26px;
             --font-size-th: 18px;
             --font-size-td: 15.5px;
             --font-weight-td: bold;
-            --table-padding: 2px 4px; /* 內縮排調小，把空間讓給字體 */
+            --table-padding: 2px 4px;
             --line-height-td: 1.1;
         }
 
@@ -31,7 +21,6 @@
             background-color: #e9ecef;
             margin: 0;
             padding: 20px 0;
-            transition: all 0.3s ease;
         }
 
         /* A4 紙張列印設定：邊界縮到最小 5mm */
@@ -135,7 +124,7 @@
             right: 20px;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 10px;
             background: rgba(255, 255, 255, 0.95);
             padding: 15px;
             border-radius: 10px;
@@ -149,17 +138,9 @@
             gap: 10px;
         }
 
-        .control-title {
-            margin: 0 0 -5px 0;
-            font-size: 14px;
-            font-weight: bold;
-            color: #333;
-            text-align: center;
-        }
-
         .action-btn {
-            padding: 10px 15px;
-            font-size: 14px;
+            padding: 12px 20px;
+            font-size: 16px;
             font-family: inherit;
             font-weight: bold;
             color: #fff;
@@ -174,33 +155,20 @@
             flex: 1;
         }
 
-        /* 標準版按鈕顏色 */
-        .btn-std-print { background-color: #2980b9; }
-        .btn-std-print:hover { background-color: #1f618d; }
-        .btn-std-pdf { background-color: #c0392b; }
-        .btn-std-pdf:hover { background-color: #922b21; }
-
-        /* 友善版按鈕顏色 (綠/橘) */
-        .btn-frd-print { background-color: #27ae60; }
-        .btn-frd-print:hover { background-color: #1e8449; }
-        .btn-frd-pdf { background-color: #d35400; }
-        .btn-frd-pdf:hover { background-color: #a04000; }
+        .btn-print { background-color: #2980b9; }
+        .btn-print:hover { background-color: #1f618d; }
+        
+        .btn-pdf { background-color: #c0392b; }
+        .btn-pdf:hover { background-color: #922b21; }
 
     </style>
 </head>
 <body>
 
     <div class="floating-controls no-print">
-        <p class="control-title">【標準版】設定 (字體適中)</p>
         <div class="btn-group">
-            <button class="action-btn btn-std-print" onclick="executeAction('standard', 'print')">🖨️ 標準 列印</button>
-            <button class="action-btn btn-std-pdf" onclick="executeAction('standard', 'pdf')">📄 標準 PDF</button>
-        </div>
-        <hr style="width: 100%; border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-        <p class="control-title">【長輩友善版】設定 (字體大/加粗)</p>
-        <div class="btn-group">
-            <button class="action-btn btn-frd-print" onclick="executeAction('friendly', 'print')">🖨️ 友善 列印</button>
-            <button class="action-btn btn-frd-pdf" onclick="executeAction('friendly', 'pdf')">📄 友善 PDF</button>
+            <button class="action-btn btn-print" onclick="window.print()">🖨️ 直接列印</button>
+            <button class="action-btn btn-pdf" onclick="saveAsPDF()">📄 儲存為 PDF</button>
         </div>
     </div>
 
@@ -480,24 +448,11 @@
     </div>
 
     <script>
-        function executeAction(mode, action) {
-            // 切換 CSS 模式
-            if (mode === 'friendly') {
-                document.body.classList.add('friendly-mode');
-            } else {
-                document.body.classList.remove('friendly-mode');
-            }
-
-            // 給予瀏覽器 0.2 秒的時間重新計算排版字體大小，再執行列印
-            setTimeout(() => {
-                if (action === 'pdf') {
-                    alert('💡 系統貼心小提醒：\n\n點擊「確定」後會開啟列印設定畫面。\n請在畫面上方的「印表機 / 目的地」選單中，選擇【另存為 PDF】即可！');
-                }
-                window.print();
-            }, 200);
+        function saveAsPDF() {
+            alert('💡 系統貼心小提醒：\n\n點擊「確定」後會開啟列印設定畫面。\n請在畫面上方的「印表機 / 目的地」選單中，選擇【另存為 PDF】即可！');
+            window.print();
         }
     </script>
 
 </body>
 </html>
-
