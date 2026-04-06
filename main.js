@@ -1,40 +1,151 @@
 /**
- * 懿美聲 K11 - 頂規智能行動 KTV 娛樂終端
- * 核心互動引擎：3D 物理傾斜引擎、Web Audio API 空間音效合成、極限倒數計時器、平滑滾動
+ * 懿美聲 K11 - 浮誇極致版行動 KTV 娛樂終端
+ * 核心互動引擎：動態粒子畫布、自定義光圈鼠標、極限 3D 傾斜、空間音效合成
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    
+
     // ==========================================
-    // 1. 飢餓行銷：極限倒數計時器 (模擬即將完售)
+    // 0. 浮誇前置作業：動態插入必備的 HTML 元素
+    // ==========================================
+    // 插入背景粒子畫布
+    const canvas = document.createElement('canvas');
+    canvas.id = 'particle-canvas';
+    document.body.prepend(canvas);
+
+    // 插入自定義鼠標
+    const cursor = document.createElement('div');
+    cursor.className = 'custom-cursor';
+    const cursorOutline = document.createElement('div');
+    cursorOutline.className = 'custom-cursor-outline';
+    document.body.appendChild(cursor);
+    document.body.appendChild(cursorOutline);
+
+    // ==========================================
+    // 1. 賽博龐克：全螢幕動態粒子星空背景
+    // ==========================================
+    const ctx = canvas.getContext('2d');
+    let particlesArray;
+
+    function initCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    
+    initCanvas();
+    window.addEventListener('resize', initCanvas);
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2.5 + 0.5;
+            this.speedX = Math.random() * 1 - 0.5;
+            this.speedY = Math.random() * 1.5 - 0.75;
+            // 隨機顏色：金、藍、紫、粉
+            const colors = ['#f1c40f', '#00f2fe', '#bc13fe', '#ff00de', '#ffffff'];
+            this.color = colors[Math.floor(Math.random() * colors.length)];
+        }
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            // 讓粒子從邊緣消失後從另一邊出現
+            if (this.x > canvas.width) this.x = 0;
+            else if (this.x < 0) this.x = canvas.width;
+            if (this.y > canvas.height) this.y = 0;
+            else if (this.y < 0) this.y = canvas.height;
+        }
+        draw() {
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+            // 為粒子添加微微發光效果
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = this.color;
+        }
+    }
+
+    function initParticles() {
+        particlesArray = [];
+        const numberOfParticles = (canvas.width * canvas.height) / 9000;
+        for (let i = 0; i < numberOfParticles; i++) {
+            particlesArray.push(new Particle());
+        }
+    }
+
+    function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < particlesArray.length; i++) {
+            particlesArray[i].update();
+            particlesArray[i].draw();
+        }
+        requestAnimationFrame(animateParticles);
+    }
+    
+    initParticles();
+    animateParticles();
+
+    // ==========================================
+    // 2. 未來科技：自定義鼠標追蹤與吸附特效
+    // ==========================================
+    window.addEventListener('mousemove', (e) => {
+        const posX = e.clientX;
+        const posY = e.clientY;
+        
+        // 實心點無延遲跟隨
+        cursor.style.left = `${posX - 10}px`;
+        cursor.style.top = `${posY - 10}px`;
+        
+        // 外圈帶有稍微延遲的平滑感
+        cursorOutline.animate({
+            left: `${posX - 20}px`,
+            top: `${posY - 20}px`
+        }, { duration: 150, fill: "forwards" });
+    });
+
+    // 當滑鼠移過可點擊元素時，光圈放大並變色
+    const interactables = document.querySelectorAll('a, button, input, select, .feature-card, .price-box');
+    interactables.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            cursorOutline.style.transform = 'scale(1.5)';
+            cursorOutline.style.borderColor = '#f1c40f';
+            cursorOutline.style.boxShadow = '0 0 15px rgba(241, 196, 15, 0.8)';
+            cursor.style.transform = 'scale(0.5)';
+        });
+        el.addEventListener('mouseleave', () => {
+            cursorOutline.style.transform = 'scale(1)';
+            cursorOutline.style.borderColor = 'rgba(255, 255, 255, 0.5)';
+            cursorOutline.style.boxShadow = 'none';
+            cursor.style.transform = 'scale(1)';
+        });
+    });
+
+    // ==========================================
+    // 3. 飢餓行銷：極限倒數計時器 (模擬即將完售)
     // ==========================================
     const hoursElem = document.getElementById('hours');
     const minutesElem = document.getElementById('minutes');
     const secondsElem = document.getElementById('seconds');
     
-    // 設定初始倒數時間 (23小時 59分 59秒)
-    let totalSeconds = 23 * 3600 + 59 * 60 + 59;
-
-    function updateTimer() {
-        if (totalSeconds <= 0) return;
-        totalSeconds--;
-        
-        const h = Math.floor(totalSeconds / 3600);
-        const m = Math.floor((totalSeconds % 3600) / 60);
-        const s = totalSeconds % 60;
-        
-        hoursElem.textContent = h.toString().padStart(2, '0');
-        minutesElem.textContent = m.toString().padStart(2, '0');
-        secondsElem.textContent = s.toString().padStart(2, '0');
+    if(hoursElem && minutesElem && secondsElem) {
+        let totalSeconds = 23 * 3600 + 59 * 60 + 59;
+        function updateTimer() {
+            if (totalSeconds <= 0) return;
+            totalSeconds--;
+            const h = Math.floor(totalSeconds / 3600);
+            const m = Math.floor((totalSeconds % 3600) / 60);
+            const s = totalSeconds % 60;
+            hoursElem.textContent = h.toString().padStart(2, '0');
+            minutesElem.textContent = m.toString().padStart(2, '0');
+            secondsElem.textContent = s.toString().padStart(2, '0');
+        }
+        setInterval(updateTimer, 1000);
     }
-    
-    // 每秒更新一次
-    setInterval(updateTimer, 1000);
 
     // ==========================================
-    // 2. 空間聲學黑科技：Web Audio API 音效合成器
+    // 4. 空間聲學黑科技：Web Audio API 音效合成器
     // ==========================================
-    // 直接調用瀏覽器底層 API，合成重低音效，無需外掛音檔
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     let audioCtx;
 
@@ -47,83 +158,62 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 合成震撼的低頻音效 (模擬重低音)
     function playBassDrop() {
         initAudio();
         const oscillator = audioCtx.createOscillator();
         const gainNode = audioCtx.createGain();
-        
         oscillator.connect(gainNode);
         gainNode.connect(audioCtx.destination);
-        
-        // 設定波形為正弦波，產生純淨低音
         oscillator.type = 'sine';
-        
-        // 頻率從 150Hz 瞬間下潛到 30Hz，創造空間感
-        oscillator.frequency.setValueAtTime(150, audioCtx.currentTime);
-        oscillator.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.5);
-        
-        // 音量控制：瞬間大聲後快速淡出
-        gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
-        
+        oscillator.frequency.setValueAtTime(200, audioCtx.currentTime);
+        oscillator.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.6);
+        gainNode.gain.setValueAtTime(0.6, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.6);
         oscillator.start(audioCtx.currentTime);
-        oscillator.stop(audioCtx.currentTime + 0.5);
+        oscillator.stop(audioCtx.currentTime + 0.6);
     }
 
-    // 綁定音效到主要行動按鈕
     const ctaButtons = document.querySelectorAll('.cta-button, .submit-btn');
     ctaButtons.forEach(btn => {
-        btn.addEventListener('mouseenter', () => {
-            playBassDrop();
-        });
-        btn.addEventListener('click', (e) => {
-            playBassDrop(); 
-        });
+        btn.addEventListener('mouseenter', playBassDrop);
+        btn.addEventListener('click', playBassDrop);
     });
 
-    // 確保瀏覽器允許播放聲音：在第一次全域點擊時初始化 AudioContext
     document.body.addEventListener('click', initAudio, { once: true });
 
     // ==========================================
-    // 3. 視覺極限：3D 物理懸浮傾斜引擎 (Parallax Tilt)
+    // 5. 視覺極限：3D 物理懸浮傾斜引擎 (Parallax Tilt) 強化版
     // ==========================================
-    // 讓特點卡片、視覺區塊、表單與開票說明在滑鼠移動時產生 3D 旋轉
-    const tiltElements = document.querySelectorAll('.feature-card, .visual-content, .price-box, .order-form, .invoice-notice');
+    const tiltElements = document.querySelectorAll('.feature-card, .visual-content, .price-box, .order-form, .invoice-notice, .hero-image-wrapper, .infographic-wrapper');
     
     tiltElements.forEach(el => {
         el.addEventListener('mousemove', (e) => {
             const rect = el.getBoundingClientRect();
-            // 計算滑鼠在元素內的 X Y 座標
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
-            
-            // 將座標轉換為百分比 (-0.5 到 0.5)
             const xPct = (x / rect.width) - 0.5;
             const yPct = (y / rect.height) - 0.5;
             
-            // 計算旋轉角度 (乘數決定傾斜程度)
-            const rotateX = yPct * -20; // 上下傾斜
-            const rotateY = xPct * 20;  // 左右傾斜
+            // 增加傾斜倍率，使 3D 效果更加劇烈浮誇
+            const rotateX = yPct * -30; 
+            const rotateY = xPct * 30;  
             
-            // 套用 3D 轉換矩陣
-            el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-            el.style.transition = 'none'; // 移除過渡以達到零延遲跟隨
+            el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+            el.style.transition = 'none'; 
             el.style.zIndex = '10';
         });
         
-        // 滑鼠離開時，平滑回歸原位
         el.addEventListener('mouseleave', () => {
             el.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-            el.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            // 增加回彈的彈性過渡曲線
+            el.style.transition = 'transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
             el.style.zIndex = '1';
         });
     });
 
     // ==========================================
-    // 4. 平滑滾動導航 (Smooth Scroll)
+    // 6. 平滑滾動導航 (Smooth Scroll)
     // ==========================================
-    // 點擊「立即搶購」等錨點連結時，平滑滾動到對應區塊
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -138,32 +228,29 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==========================================
-    // 5. 滾動視差進場動畫 (Intersection Observer)
+    // 7. 滾動視差進場動畫 (Intersection Observer)
     // ==========================================
-    // 當元素進入畫面視窗時，觸發淡入並上浮的動畫
     const observerOptions = {
-        threshold: 0.1,
-        rootMargin: "0px 0px -50px 0px"
+        threshold: 0.15,
+        rootMargin: "0px 0px -100px 0px"
     };
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.style.opacity = "1";
-                entry.target.style.transform = "translateY(0) scale(1)";
-                observer.unobserve(entry.target); // 動畫只執行一次
+                entry.target.style.transform = "translateY(0) scale(1) rotateX(0deg)";
+                observer.unobserve(entry.target); 
             }
         });
     }, observerOptions);
 
-    // 需動態進場的元素：特點卡片、視覺區塊、表單、開票說明
     const animatedElements = document.querySelectorAll('.feature-card, .visual-content, .order-form, .invoice-notice');
-    animatedElements.forEach(el => {
-        // 設定初始隱藏狀態
+    animatedElements.forEach((el, index) => {
         el.style.opacity = "0";
-        el.style.transform = "translateY(40px) scale(0.98)";
-        // 設定動畫過渡曲線
-        el.style.transition = "all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+        // 加入 3D 翻轉進場與交錯延遲
+        el.style.transform = "translateY(80px) scale(0.9) rotateX(20deg)";
+        el.style.transition = `all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) ${index * 0.1}s`;
         observer.observe(el);
     });
 
